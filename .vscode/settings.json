@@ -1,0 +1,11 @@
+{
+    "git.allowForcePush": true,
+    "git.allowNoVerifyCommit": true,
+    "git.alwaysShowStagedChangesResourceGroup": true,
+    "git.alwaysSignOff": true,
+    "flutter-files.menu.screen": true,
+    "flutter-files.menu.smallpack": true,
+    "flutter-files.menu.state": true,
+    "flutter-files.menu.repository": true,
+    "flutter-files.menu.provider": true
+}

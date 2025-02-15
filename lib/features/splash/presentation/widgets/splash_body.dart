@@ -1,0 +1,150 @@
+import 'dart:async';
+
+import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_market/core/utils/app_colors.dart';
+import 'package:fruit_market/core/utils/app_images.dart';
+import 'package:fruit_market/features/home/presentation/pages/home_screen.dart';
+import 'package:get/get.dart';
+
+import '../../../onboarding/presentation/pages/onboarding_screen.dart';
+
+class SplashBody extends StatefulWidget {
+  const SplashBody({super.key});
+
+  @override
+  State<SplashBody> createState() => _SplashBodyState();
+}
+
+class _SplashBodyState extends State<SplashBody>
+    with SingleTickerProviderStateMixin {
+  double ballY = 0;
+  double widthVal = 50;
+  double heightVal = 50;
+  double bottomVal = 500;
+  bool add = false;
+  bool showShadow = false;
+  int times = 0;
+  bool showComic = false;
+
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+          ..addListener(
+            () {
+              if (add) {
+                ballY += 15;
+              } else {
+                ballY -= 15;
+              }
+              if (ballY <= -200) {
+                times += 1;
+                add = true;
+                showShadow = true;
+              }
+              if (ballY >= 0) {
+                add = false;
+                showShadow = false;
+                widthVal += 50;
+                heightVal += 50;
+                bottomVal -= 200;
+              }
+              if (times == 3) {
+                showShadow = false;
+                widthVal = MediaQuery.sizeOf(context).width;
+                heightVal = MediaQuery.sizeOf(context).height / 2;
+                Timer(const Duration(milliseconds: 300), () {
+                  setState(() {
+                    showComic = true;
+                  });
+                });
+                _controller.stop();
+              }
+              setState(() {});
+            },
+          );
+    _controller.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        AnimatedPositioned(
+          bottom: bottomVal,
+          duration: const Duration(milliseconds: 600),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Transform.translate(
+                offset: Offset(0, ballY),
+                child: AnimatedScale(
+                  duration: const Duration(milliseconds: 200),
+                  scale: times == 3 ? 5 : 1,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 1000),
+                    width: widthVal,
+                    height: heightVal,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: primaryColor),
+                  ),
+                ),
+              ),
+              if (showShadow)
+                Container(
+                  width: 50,
+                  height: 10,
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(.2),
+                      borderRadius: BorderRadius.circular(100)),
+                ),
+              if (showComic)
+                ElasticIn(
+                  onFinish: (direction) {
+                    Get.offAll(
+                      () => (FirebaseAuth.instance.currentUser == null)
+                          ? const OnboardingScreen()
+                          : HomeScreen(),
+                      transition: Transition.rightToLeftWithFade,
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      Text("Fruit Market",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 51.sp,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      SizedBox(
+                        height: 100.h,
+                      ),
+                      Image.asset(
+                        mixFruit,
+                        width: MediaQuery.sizeOf(context).width,
+                        height: 225.h,
+                      ),
+                    ],
+                  ),
+                )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
