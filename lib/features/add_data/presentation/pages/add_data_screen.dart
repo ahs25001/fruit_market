@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_market/core/utils/app_colors.dart';
 import 'package:fruit_market/features/add_data/presentation/cubit/add_data_cubit.dart';
+import 'package:fruit_market/features/add_data/presentation/pages/add_new_product_screen.dart';
 import 'package:fruit_market/features/add_data/presentation/wedgits/add_sub_category_dialog.dart';
 import 'package:get/get.dart' as getx;
 
@@ -90,7 +91,9 @@ class AddDataScreen extends StatelessWidget {
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w600),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      getx.Get.to(AddNewProductScreen(),transition: getx.Transition.rightToLeftWithFade);
+                    },
                   ),
                 ],
               ),
