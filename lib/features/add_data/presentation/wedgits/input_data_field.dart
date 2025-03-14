@@ -8,14 +8,17 @@ class InputDataField extends StatelessWidget {
   TextEditingController controller;
   bool isDecription;
   bool isNumber;
+  bool? isMultiLine;
   FocusNode focusNode;
   VoidCallback onSubmit;
-
+  // Function validator;
   InputDataField({
     super.key,
+    // required this.validator,
     required this.onSubmit,
     required this.hint,
     required this.focusNode,
+    this.isMultiLine,
     required this.controller,
     required this.isDecription,
     required this.isNumber,
@@ -24,10 +27,15 @@ class InputDataField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+      keyboardType: isNumber
+          ? TextInputType.number
+          : isMultiLine ?? false
+              ? TextInputType.multiline
+              : TextInputType.text,
       cursorOpacityAnimates: true,
       controller: controller,
       focusNode: focusNode,
+      validator: (value) => value!.isEmpty ? "$hint is requred":null,
       onFieldSubmitted: (value) => onSubmit(),
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -42,7 +50,6 @@ class InputDataField extends StatelessWidget {
           borderSide: BorderSide(color: borderColor),
         ),
         hintText: hint,
-      
       ),
       maxLines: isDecription ? 6 : 1,
     );

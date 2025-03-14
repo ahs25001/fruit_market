@@ -29,4 +29,8 @@ class FirebaseFirestoreManager {
     subcategory.id = doc.id;
     await doc.set(subcategory.toJson());
   }
+  Future<List<SubCategoryModel>> getSubcategories() async {
+    var doc = await FirebaseFirestore.instance.collection('Subcategories').get();
+    return doc.docs.map((e) => SubCategoryModel.fromJson(e.data())).toList();
+  }
 }
