@@ -45,3 +45,6 @@ android {
 flutter {
     source = "../.."
 }
+dependencies {
+    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0" // Update to the latest version
+}

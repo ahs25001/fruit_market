@@ -44,12 +44,16 @@ class AddNewProductScreen extends StatelessWidget {
                   return state.statuse!;
                 },
                 builder: (context, state) {
-                  return state == AddDataStatuse.loading
-                      ? Center(
+                  if (state == AddDataStatuse.loading) {
+                    return Center(
                           child: CircularProgressIndicator(
                           color: primaryColor,
-                        ))
-                      : Padding(
+                        ));
+                  }else if (state ==AddDataStatuse.error) {
+                    return Center(child: Text("Error!"));
+                  }
+                   else {
+                    return Padding(
                           padding: EdgeInsets.symmetric(
                               horizontal: 20.w, vertical: 20.h),
                           child: SingleChildScrollView(
@@ -62,34 +66,42 @@ class AddNewProductScreen extends StatelessWidget {
                                     return state.productImage;
                                   },
                                   builder: (context, state) {
-                                    return (state == null)
-                                        ? DottedBorder(
-                                            color: Colors.black,
-                                            dashPattern: [
-                                              16.w,
-                                              16.w,
-                                              16.w,
-                                              16.w
-                                            ],
-                                            child: Container(
-                                                color: Colors.grey,
-                                                width: double.infinity,
-                                                height: 172.h,
-                                                child: Icon(
-                                                  Icons
-                                                      .add_photo_alternate_outlined,
-                                                  color: Colors.black54,
-                                                  size: 40.sp,
-                                                )),
-                                          )
-                                        : ClipRRect(
+                                    if ((state == null)) {
+                                      return InkWell(
+                                        onTap: () {
+                                          AddDataCubit.get(context).pickImage();
+                                        },
+                                        child: DottedBorder(
+                                              color: Colors.black,
+                                              dashPattern: [
+                                                16.w,
+                                                16.w,
+                                                16.w,
+                                                16.w
+                                              ],
+                                              child: Container(
+                                                  color: Colors.grey,
+                                                  width: double.infinity,
+                                                  height: 172.h,
+                                                  child: Icon(
+                                                    Icons
+                                                        .add_photo_alternate_outlined,
+                                                    color: Colors.black54,
+                                                    size: 40.sp,
+                                                  )),
+                                            ),
+                                      );
+                                    } else {
+                                      return ClipRRect(
                                           borderRadius: BorderRadius.circular(16.r),
                                           child: Image.file(
                                               File(state.path),
+                                              fit: BoxFit.cover,
                                               width: double.infinity,
                                               height: 172.h,
                                             ),
                                         );
+                                    }
                                   },
                                 ),
                                 SizedBox(
@@ -242,6 +254,7 @@ class AddNewProductScreen extends StatelessWidget {
                             ),
                           ),
                         );
+                  }
                 },
               ),
             ),
