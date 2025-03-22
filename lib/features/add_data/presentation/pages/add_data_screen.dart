@@ -17,7 +17,7 @@ class AddDataScreen extends StatelessWidget {
       create: (context) => addDataCubit,
       child: BlocConsumer<AddDataCubit, AddDataState>(
         listener: (context, state) {
-          if (state.statuse == AddDataStatuse.loading) {
+          if (state.statuse == AddDataStatuse.addSubcategoryLoading) {
             getx.Get.back();
             showDialog(
               context: context,
@@ -30,7 +30,7 @@ class AddDataScreen extends StatelessWidget {
                 ),
               ),
             );
-          } else if (state.statuse == AddDataStatuse.success) {
+          } else if (state.statuse == AddDataStatuse.addSubcategorySuccess) {
             getx.Get.back();
             getx.Get.showSnackbar(getx.GetSnackBar(
               backgroundColor: primaryColor,
@@ -92,7 +92,7 @@ class AddDataScreen extends StatelessWidget {
                           fontWeight: FontWeight.w600),
                     ),
                     onTap: () {
-                      getx.Get.to(AddNewProductScreen(),transition: getx.Transition.rightToLeftWithFade);
+                      getx.Get.to(()=>AddNewProductScreen(),transition: getx.Transition.rightToLeftWithFade);
                     },
                   ),
                 ],

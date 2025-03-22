@@ -4,6 +4,7 @@ import 'package:fruit_market/core/models/product_model.dart';
 import 'package:fruit_market/core/utils/app_colors.dart';
 import 'package:get/get.dart' as getx;
 
+// ignore: must_be_immutable
 class ProductDetailsScreen extends StatelessWidget {
   ProductModel productModel;
   ProductDetailsScreen({Key? key, required this.productModel})
@@ -58,7 +59,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 11.5.w),
                     child: Text(
-                      productModel.discription ?? "",
+                      productModel.description ?? "",
                       style:
                           TextStyle(fontSize: 12.sp, color: discriptionColor),
                     ),

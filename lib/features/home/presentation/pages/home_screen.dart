@@ -10,6 +10,7 @@ import 'package:fruit_market/features/home/presentation/pages/subcategory_tab.da
 import 'package:fruit_market/features/home/presentation/widgets/catigory_item.dart';
 import 'package:fruit_market/features/home/presentation/widgets/search_field.dart';
 import 'package:get/get.dart' as getx;
+
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -94,7 +95,9 @@ class HomeScreen extends StatelessWidget {
                         // duration: Duration(microseconds: 300),
                         child: InkWell(
                           onTap: () {
-                            getx.Get.to(AddDataScreen(),transition: getx.Transition.rightToLeftWithFade);
+                            getx.Get.to(() => AddDataScreen(),
+                                transition:
+                                    getx.Transition.rightToLeftWithFade);
                           },
                           child: Icon(
                             Icons.add,

@@ -1,0 +1,2 @@
+H:/StudioProjects/fruit_market/android/app/.cxx/RelWithDebInfo/562m5748/x86/CMakeFiles/edit_cache.dir
+H:/StudioProjects/fruit_market/android/app/.cxx/RelWithDebInfo/562m5748/x86/CMakeFiles/rebuild_cache.dir

@@ -7,8 +7,9 @@ class CustomDropMenu extends StatelessWidget {
 TextEditingController controller;
 String?hint;
 String ? initialvalue;
+Function onSelected;
 List<DropdownMenuEntry<dynamic>> items;
-  CustomDropMenu({super.key, required this.controller, required this.items,this.hint, this.initialvalue});
+  CustomDropMenu({super.key, required this.controller,required this.onSelected, required this.items,this.hint, this.initialvalue});
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
@@ -25,6 +26,7 @@ List<DropdownMenuEntry<dynamic>> items;
         ),
         hintText: hint,
         initialSelection: initialvalue,
+        onSelected: (value) => onSelected(value),
         inputDecorationTheme: InputDecorationTheme(
             hoverColor: primaryColor,
             enabledBorder: OutlineInputBorder(

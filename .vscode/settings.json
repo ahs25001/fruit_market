@@ -7,5 +7,13 @@
     "flutter-files.menu.smallpack": true,
     "flutter-files.menu.state": true,
     "flutter-files.menu.repository": true,
-    "flutter-files.menu.provider": true
+    "flutter-files.menu.provider": true,
+    "dart.sdkPath": "G:/fluter sdks/flutter_windows_3.29.2-stable/flutter/bin/cache/dart-sdk",
+    "dart.flutterSdkPaths": [
+        "G:/fluter sdks/flutter_windows_3.29.2-stable/flutter"
+    ],
+    "dart.sdkPaths": [
+        "G:/fluter sdks/flutter_windows_3.29.2-stable/flutter/bin/cache/dart-sdk"
+    ],
+    "dart.flutterSdkPath": "G:/fluter sdks/flutter_windows_3.29.2-stable/flutter"
 }

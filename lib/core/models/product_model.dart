@@ -4,8 +4,8 @@ class ProductModel {
   String? price;
   String? categoryName;
   String? subCategoryName;
-  String? discription;
-  List<String?>? nutrition;
+  String? description;
+  List<dynamic>? nutrition;
   String? image;
   double?rating;
   ProductModel(
@@ -15,14 +15,14 @@ class ProductModel {
       this.price,
       this.categoryName,
       this.subCategoryName,
-      this.discription,
+      this.description,
       this.nutrition,
       this.image});
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     rating = json["rating"];
     name = json["name"];
-    discription = json["discription"];
+    description = json["description"];
     nutrition = json["nutrition"];
     categoryName = json["categoryName"];
     subCategoryName = json["subCategoryName"];
@@ -37,7 +37,7 @@ class ProductModel {
         'subCategoryName': subCategoryName,
         'image': image,
         'categoryName': categoryName,
-        'discription': discription,
+        'description': description,
         'nutrition': nutrition
       };
 }

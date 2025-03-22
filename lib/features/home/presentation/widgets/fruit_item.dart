@@ -20,7 +20,7 @@ class FruitItem extends StatelessWidget {
             ProductDetailsScreen(
               productModel: ProductModel(
                 categoryName: "Fruits",
-                discription:
+                description:
                     "Grapes will provide natural nutrients. The  Chemical in organic grapes which can be healthier hair and skin. It can be improve Your heart health. Protect your body from Cancer.",
                 id: "",
                 image: "assets/images/fru.jpg",

@@ -38,13 +38,13 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+            minifyEnabled false
+            shrinkResources false
+            // signingConfig signingConfigs.release
         }
-    }
+    }  
 }
 
 flutter {
     source = "../.."
-}
-dependencies {
-    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0" // Update to the latest version
 }
