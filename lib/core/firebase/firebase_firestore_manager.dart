@@ -11,7 +11,7 @@ class FirebaseFirestoreManager {
     return _instance!;
   }
 
-  Future<UserModel> getUser(String id) async {
+  Future<UserModel?> getUser(String id) async {
     var doc =
         await FirebaseFirestore.instance.collection('Users').doc(id).get();
     return UserModel.fromJson(doc.data()!);

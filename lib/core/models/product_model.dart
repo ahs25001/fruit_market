@@ -7,7 +7,7 @@ class ProductModel {
   String? description;
   List<dynamic>? nutrition;
   String? image;
-  double?rating;
+  num?rating;
   ProductModel(
       {this.id,
       this.name,

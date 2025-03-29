@@ -1,3 +1,4 @@
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_market/core/models/product_model.dart';
@@ -6,7 +7,7 @@ import 'package:get/get.dart' as getx;
 
 // ignore: must_be_immutable
 class ProductDetailsScreen extends StatelessWidget {
-  ProductModel productModel;
+  ProductModel? productModel;
   ProductDetailsScreen({Key? key, required this.productModel})
       : super(key: key);
 
@@ -36,20 +37,23 @@ class ProductDetailsScreen extends StatelessWidget {
               child: ListView(
                 // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10.r),
-                    child: Image.asset(
-                      productModel.image ?? "",
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 186.h,
+                  Hero(
+                    tag: productModel?.image ?? "",
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10.r),
+                      child: FancyShimmerImage(
+                        imageUrl:  productModel?.image ?? "",
+                        boxFit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 186.h,
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: 18.h,
                   ),
                   Text(
-                    productModel.name ?? "",
+                    productModel?.name ?? "",
                     style:
                         TextStyle(fontSize: 22.sp, fontWeight: FontWeight.w100),
                   ),
@@ -59,7 +63,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 11.5.w),
                     child: Text(
-                      productModel.description ?? "",
+                      productModel?.description ?? "",
                       style:
                           TextStyle(fontSize: 12.sp, color: discriptionColor),
                     ),
@@ -80,7 +84,7 @@ class ProductDetailsScreen extends StatelessWidget {
                       height: 22.h,
                     ),
                     shrinkWrap: true,
-                    itemCount: productModel.nutrition?.length ?? 0,
+                    itemCount: productModel?.nutrition?.length ?? 0,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) => Row(
                       children: [
@@ -91,7 +95,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         SizedBox(
                           width: 13.w,
                         ),
-                        Text(productModel.nutrition?[index] ?? "",
+                        Text(productModel?.nutrition?[index] ?? "",
                             style: TextStyle(
                                 fontSize: 12.sp, color: discriptionColor))
                       ],
@@ -106,7 +110,7 @@ class ProductDetailsScreen extends StatelessWidget {
               child: Row(
                 children: [
                   Text(
-                    "EGP ${productModel.price} Per/ kg",
+                    "EGP ${productModel?.price} Per/ kg",
                     style:
                         TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
                   ),

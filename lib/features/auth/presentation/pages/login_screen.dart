@@ -5,7 +5,7 @@ import 'package:fruit_market/core/utils/app_colors.dart';
 import 'package:fruit_market/core/utils/app_images.dart';
 import 'package:fruit_market/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:fruit_market/features/auth/presentation/pages/complet_data_screen.dart';
-// import 'package:get/route_manager.dart';
+import 'package:fruit_market/features/home/presentation/pages/home_screen.dart';
 import 'package:get/get.dart' as getx;
 
 import '../widgets/login_item.dart';
@@ -33,12 +33,15 @@ class LoginScreen extends StatelessWidget {
                   );
                 },
               );
-            } else if (state.status == AuthStatus.success) {
-              Navigator.pop(context);
-              getx.Get.to(() => CompleteDataScreen(),
+            } else if ((state.status == AuthStatus.getUserSuccess &&
+                (state.currentUser == null )||
+                    state.status == AuthStatus.getUserError)) {
+              // Navigator.pop(context);
+              getx.Get.offAll(() => CompleteDataScreen(),
                   transition: getx.Transition.rightToLeftWithFade);
-            }
-            else if (state.status == AuthStatus.error) {
+            } else if (state.status==AuthStatus.getUserSuccess&&state.currentUser!=null){
+              getx.Get.offAll(()=>HomeScreen());
+            }else if (state.status == AuthStatus.error) {
               Navigator.pop(context);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fruit_market/core/utils/app_constants.dart';
+import 'package:fruit_market/features/auth/data/models/user_model.dart';
 import 'package:fruit_market/features/auth/data/repositories/auth_repo_impl.dart';
 import 'package:fruit_market/features/auth/domain/repositories/auth_repo.dart';
 import 'package:meta/meta.dart';
@@ -25,6 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
       AuthRepo authRepo = AuthRepoImpl();
       await authRepo.loginWithGoogle();
       emit(state.copyWith(status: AuthStatus.success));
+      getUser();
     } catch (e) {
       emit(state.copyWith(status: AuthStatus.error, massage: e.toString()));
     }
@@ -36,6 +39,7 @@ class AuthCubit extends Cubit<AuthState> {
       AuthRepo authRepo = AuthRepoImpl();
       await authRepo.loginWithFacebook();
       emit(state.copyWith(status: AuthStatus.success));
+      getUser();
     } catch (e) {
       print(e.toString());
       emit(state.copyWith(status: AuthStatus.error, massage: e.toString()));
@@ -55,6 +59,19 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       print(e.toString());
       emit(state.copyWith(status: AuthStatus.error, massage: e.toString()));
+    }
+  }
+
+  void getUser() async {
+    try {
+      emit(state.copyWith(status: AuthStatus.loading));
+      var user = await firebaseFirestoreManager
+          .getUser(FirebaseAuth.instance.currentUser!.uid);
+      emit(
+          state.copyWith(currentUser: user, status: AuthStatus.getUserSuccess));
+    } catch (e) {
+      emit(state.copyWith(
+          massage: e.toString(), status: AuthStatus.getUserError));
     }
   }
 }

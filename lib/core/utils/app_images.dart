@@ -1,7 +1,12 @@
 String mixFruit = "assets/images/mix_fruit.png";
-String firstOnboardingImage= "assets/images/first_onboarding_image.svg";
-String secondOnboardingImage= "assets/images/second_onboarding-image.svg";
-String thirdOnboardingImage= "assets/images/thered_onboarding_image.svg";
-String googleLogo= "assets/images/google_logo.svg";
+String firstOnboardingImage = "assets/images/first_onboarding_image.svg";
+String secondOnboardingImage = "assets/images/second_onboarding-image.svg";
+String thirdOnboardingImage = "assets/images/thered_onboarding_image.svg";
+String googleLogo = "assets/images/google_logo.svg";
 String faceBookLogo = "assets/images/face_book_logo.svg";
-String marketImage="assets/images/market_image.png";
+String marketImage = "assets/images/market_image.png";
+String homeTabIcon = "assets/images/home_tab_icon.svg";
+String cartTabIcon = "assets/images/cart_tab_icon.svg";
+String profileTabIcon = "assets/images/profile_tab_icon.svg";
+String favoriteTabIcon = "assets/images/favorite_tab_icon.svg";
+String errorImage = "assets/images/error_image.jpg";
