@@ -5,9 +5,11 @@ enum HomeStatus {
   getSubcategoriesLoading,
   getSubcategoriesSuccess,
   addProductToFavoriteSuccess,
+  addProductToCartSuccess,
   changeQuntityLoading,
   changeQuntitySuccess,
   removeProductFromFavoriteSuccess,
+  removeProductFromCartSuccess,
   error
 }
 
@@ -23,12 +25,14 @@ class HomeState {
   List<SubCategoryModel?>? dryFruitsSubCategories;
   List<FavoriteModel>? favoriteProducts;
   List<String>? favoriteProductsIds;
-  CartModel? cartModel;
+  List<CartModel>? cartProducts;
+  List<String>? cartIds;
   HomeState(
       {this.status,
       this.currentTab,
       this.currentPage,
-      this.cartModel,
+      this.cartIds,
+      this.cartProducts,
       this.favoriteProductsIds,
       this.favoriteProducts,
       this.fruitSubCategories,
@@ -39,8 +43,9 @@ class HomeState {
   HomeState copyWith(
       {HomeStatus? status,
       int? currentPage,
+      List<String>? cartIds,
       int? currentTab,
-      CartModel? cartModel,
+      List<CartModel>? cartProducts,
       List<FavoriteModel>? favoriteProducts,
       List<String>? favoriteProductsIds,
       String? massage,
@@ -48,7 +53,8 @@ class HomeState {
       List<SubCategoryModel?>? vegetablesSubCategories,
       List<SubCategoryModel?>? dryFruitsSubCategories}) {
     return HomeState(
-        cartModel: cartModel ?? this.cartModel,
+        cartIds: cartIds ?? this.cartIds,
+        cartProducts: cartProducts ?? this.cartProducts,
         currentTab: currentTab ?? this.currentTab,
         massage: massage ?? this.massage,
         status: status ?? this.status,

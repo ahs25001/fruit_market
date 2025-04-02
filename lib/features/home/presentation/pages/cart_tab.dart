@@ -54,17 +54,16 @@ class CartTab extends StatelessWidget {
             BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {
                 return (state.favoriteProducts == null ||
-                        state.favoriteProducts!.isEmpty)
+                        state.cartProducts!.isEmpty)
                     ? Center(child: Lottie.asset(emptyList))
                     : Expanded(
                         child: ListView(
                         children: [
-                          ...state.favoriteProducts!.map((e) {
-                            int currentIndex =
-                                state.favoriteProducts!.indexOf(e);
+                          ...state.cartProducts!.map((e) {
+                            int currentIndex = state.cartProducts!.indexOf(e);
                             if (currentIndex == 0 ||
                                 e.categoryName !=
-                                    state.favoriteProducts![currentIndex - 1]
+                                    state.cartProducts![currentIndex - 1]
                                         .categoryName) {
                               return Column(
                                 children: [
@@ -86,11 +85,20 @@ class CartTab extends StatelessWidget {
                                     duration: Duration(
                                         milliseconds: (currentIndex + 1) * 100),
                                     child: CartItem(
+                                      onDelete: () {
+                                        context
+                                            .read<HomeCubit>()
+                                            .removeProductFromCart(e.id ?? "");
+                                      },
                                       onInc: () {
-                                        
+                                        context
+                                            .read<HomeCubit>()
+                                            .incQuantityInCart(e);
                                       },
                                       onDec: () {
-                                        
+                                        context
+                                            .read<HomeCubit>()
+                                            .decQuantityInCart(e);
                                       },
                                       productModel: e,
                                     ),
@@ -102,11 +110,20 @@ class CartTab extends StatelessWidget {
                               duration: Duration(
                                   milliseconds: (currentIndex + 1) * 100),
                               child: CartItem(
-                                onDec: () {
-                                  
+                                onDelete: () {
+                                  context
+                                      .read<HomeCubit>()
+                                      .removeProductFromCart(e.id ?? "");
                                 },
                                 onInc: () {
-                                  
+                                  context
+                                      .read<HomeCubit>()
+                                      .incQuantityInCart(e);
+                                },
+                                onDec: () {
+                                  context
+                                      .read<HomeCubit>()
+                                      .decQuantityInCart(e);
                                 },
                                 productModel: e,
                               ),

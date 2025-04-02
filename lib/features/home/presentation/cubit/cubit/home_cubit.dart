@@ -72,12 +72,12 @@ class HomeCubit extends Cubit<HomeState> {
             )
             .toList();
         List<FavoriteModel> sortedFavoriteProducts = [];
-        List<String>categories=["Fruits","Vegetables","Dry Fruits"];
-        int index=0;
+        List<String> categories = ["Fruits", "Vegetables", "Dry Fruits"];
+        int index = 0;
         for (var categoriy in categories) {
-          for(var product in favoriteProducts){
-            if(product.categoryName==categoriy){
-              sortedFavoriteProducts.insert(index,product);
+          for (var product in favoriteProducts) {
+            if (product.categoryName == categoriy) {
+              sortedFavoriteProducts.insert(index, product);
               index++;
             }
           }
@@ -142,7 +142,94 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  void getCart() {
+    HomeRepo homeRepo = HomeRepoImpl();
+    homeRepo.getCart().listen(
+      (event) {
+        List<CartModel> productsInCart = event.docs.map(
+          (e) {
+            return CartModel.fromJson(e.data());
+          },
+        ).toList();
+
+        List<CartModel> sortedCartProducts = [];
+        List<String> categories = ["Fruits", "Vegetables", "Dry Fruits"];
+        int index = 0;
+        for (var categoriy in categories) {
+          for (var product in productsInCart) {
+            if (product.categoryName == categoriy) {
+              sortedCartProducts.insert(index, product);
+              index++;
+            }
+          }
+        }
+        List<String> cartIds = sortedCartProducts
+            .map(
+              (e) => e.id ?? "",
+            )
+            .toList();
+        emit(state.copyWith(
+          cartIds: cartIds,
+          cartProducts: sortedCartProducts,
+        ));
+      },
+    );
+  }
+
+  void addProductToCart(CartModel? cartModel) async {
+    HomeRepo homeRepo = HomeRepoImpl();
+    var response = await homeRepo.addProductToCart(cartModel!);
+    response.fold(
+      (l) => emit(state.copyWith(status: HomeStatus.error, massage: l.massage)),
+      (r) => emit(state.copyWith(status: HomeStatus.addProductToCartSuccess)),
+    );
+  }
+
+  void removeProductFromCart(String modelId) async {
+    HomeRepo homeRepo = HomeRepoImpl();
+    var response = await homeRepo.removeProductFromCart(modelId);
+    response.fold(
+      (l) => emit(state.copyWith(status: HomeStatus.error, massage: l.massage)),
+      (r) =>
+          emit(state.copyWith(status: HomeStatus.removeProductFromCartSuccess)),
+    );
+  }
+
+  void incQuantityInCart(CartModel cartModel) async {
+    emit(state.copyWith(status: HomeStatus.changeQuntityLoading));
+    cartModel.quntitiy = (cartModel.quntitiy ?? 1) + 1;
+    HomeRepo homeRepo = HomeRepoImpl();
+    var response = await homeRepo.updateCart(cartModel);
+    response.fold(
+      (error) {
+        emit(state.copyWith(status: HomeStatus.error, massage: error.massage));
+      },
+      (r) {
+        emit(state.copyWith(status: HomeStatus.changeQuntitySuccess));
+      },
+    );
+  }
+
+  void decQuantityInCart(CartModel cartModel) async {
+    if ((cartModel.quntitiy ?? 1) > 1) {
+      emit(state.copyWith(status: HomeStatus.changeQuntityLoading));
+      cartModel.quntitiy = (cartModel.quntitiy ?? 1) - 1;
+      HomeRepo homeRepo = HomeRepoImpl();
+      var response = await homeRepo.updateCart(cartModel);
+      response.fold(
+        (error) {
+          emit(
+              state.copyWith(status: HomeStatus.error, massage: error.massage));
+        },
+        (r) {
+          emit(state.copyWith(status: HomeStatus.changeQuntitySuccess));
+        },
+      );
+    }
+  }
+
   HomeCubit() : super(HomeInitial()) {
     getFavoriteList();
+    getCart();
   }
 }

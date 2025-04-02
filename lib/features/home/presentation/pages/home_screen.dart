@@ -44,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                               curve: Curves.elasticOut,
                               animationDuration: Duration(milliseconds: 1000)),
                           badgeContent: Text(
-                            "${state.favoriteProductsIds?.length ?? 0}",
+                            "${state.cartProducts?.length ?? 0}",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 14.sp),
                           ),

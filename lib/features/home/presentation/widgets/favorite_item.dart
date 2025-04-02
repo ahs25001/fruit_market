@@ -10,9 +10,15 @@ class FavoriteItem extends StatelessWidget {
   FavoriteModel? productModel;
   VoidCallback onInc;
   VoidCallback onDec;
+  VoidCallback addToCart;
+  VoidCallback removeFromCart;
+  bool isInCart;
   FavoriteItem(
       {required this.productModel,
       required this.onDec,
+     required this.isInCart,
+      required this.addToCart,
+      required this.removeFromCart,
       required this.onInc,
       super.key});
 
@@ -21,7 +27,7 @@ class FavoriteItem extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 20.h, left: 10.w, right: 10.w),
       decoration: BoxDecoration(
-          border: Border.all(color: primaryColor,width: 2.w),
+          border: Border.all(color: primaryColor, width: 2.w),
           borderRadius: BorderRadius.circular(10.r)),
       padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.h),
       child: Row(
@@ -141,8 +147,23 @@ class FavoriteItem extends StatelessWidget {
               SizedBox(
                 height: 30.h,
               ),
-              ElevatedButton(
-                  onPressed: () {},
+             (isInCart)?
+             ElevatedButton(
+                  onPressed: () {
+                    removeFromCart();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.r),
+                      )),
+                  child: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  )): ElevatedButton(
+                  onPressed: () {
+                    addToCart();
+                  },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: slectedTabColor,
                       shape: RoundedRectangleBorder(

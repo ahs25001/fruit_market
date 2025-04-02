@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_market/core/models/product_model.dart';
 import 'package:fruit_market/core/models/subcategory_model.dart';
 import 'package:fruit_market/features/auth/data/models/user_model.dart';
+import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/home/data/models/favorite_model.dart';
 
 class FirebaseFirestoreManager {
@@ -84,5 +85,30 @@ class FirebaseFirestoreManager {
     var favoriteProductDoc =
         FirebaseFirestore.instance.collection("Favorites").doc(newProduct.id);
     favoriteProductDoc.update(newProduct.toJson());
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getCart() {
+    return FirebaseFirestore.instance
+        .collection("Cart")
+        .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+  }
+
+  void addProductToCart(CartModel model) async {
+    var favoriteProductDoc =
+        FirebaseFirestore.instance.collection("Cart").doc(model.id);
+    await favoriteProductDoc.set(model.toJson());
+  }
+
+  void removeProductFromCart(String modelId) async {
+    var favoriteProductDoc =
+        FirebaseFirestore.instance.collection("Cart").doc(modelId);
+    await favoriteProductDoc.delete();
+  }
+
+  void updateCart(CartModel newCart) {
+    var favoriteProductDoc =
+        FirebaseFirestore.instance.collection("Cart").doc(newCart.uid);
+    favoriteProductDoc.update(newCart.toJson());
   }
 }

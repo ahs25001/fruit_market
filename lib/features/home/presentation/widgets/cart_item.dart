@@ -9,10 +9,12 @@ class CartItem extends StatelessWidget {
   CartModel? productModel;
   VoidCallback onInc;
   VoidCallback onDec;
+  VoidCallback onDelete;
   CartItem(
       {required this.productModel,
       required this.onDec,
       required this.onInc,
+      required this.onDelete,
       super.key});
 
   @override
@@ -94,10 +96,15 @@ class CartItem extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Icon(
-                  Icons.delete,
-                  size: 25.sp,
-                  color: borderColor,
+                InkWell(
+                  onTap: () {
+                    onDelete();
+                  },
+                  child: Icon(
+                    Icons.delete,
+                    size: 25.sp,
+                    color: borderColor,
+                  ),
                 ),
                 SizedBox(
                   height: 15.h,

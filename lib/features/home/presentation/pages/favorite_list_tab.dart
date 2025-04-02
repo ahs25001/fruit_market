@@ -1,9 +1,11 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_market/core/utils/app_colors.dart';
 import 'package:fruit_market/core/utils/app_json.dart';
+import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/home/presentation/cubit/cubit/home_cubit.dart';
 import 'package:fruit_market/features/home/presentation/widgets/favorite_item.dart';
 import 'package:lottie/lottie.dart';
@@ -87,6 +89,27 @@ class FavoriteListTab extends StatelessWidget {
                                           milliseconds:
                                               (currentIndex + 1) * 100),
                                       child: FavoriteItem(
+                                        isInCart:
+                                            state.cartIds?.contains(e.id) ??
+                                                false,
+                                        addToCart: () {
+                                          context
+                                              .read<HomeCubit>()
+                                              .addProductToCart(CartModel(
+                                                  uid: FirebaseAuth.instance
+                                                      .currentUser!.uid,
+                                                  id: e.id,
+                                                  name: e.name,
+                                                  categoryName: e.categoryName,
+                                                  price: e.price,
+                                                  image: e.image,
+                                                  quntitiy: e.quntitiy??1));
+                                        },
+                                        removeFromCart: () {
+                                          context
+                                              .read<HomeCubit>()
+                                              .removeProductFromCart(e.id!);
+                                        },
                                         onDec: () => context
                                             .read<HomeCubit>()
                                             .decQuantityInFavorite(e),
@@ -103,10 +126,31 @@ class FavoriteListTab extends StatelessWidget {
                                 duration: Duration(
                                     milliseconds: (currentIndex + 1) * 100),
                                 child: FavoriteItem(
-                                  onDec: () =>
-                                      context.read<HomeCubit>().decQuantityInFavorite(e),
-                                  onInc: () =>
-                                      context.read<HomeCubit>().incQuantityInFavorite(e),
+                                  isInCart:
+                                      state.cartIds?.contains(e.id) ?? false,
+                                  addToCart: () {
+                                    context.read<HomeCubit>().addProductToCart(
+                                        CartModel(
+                                            uid: FirebaseAuth
+                                                .instance.currentUser!.uid,
+                                            id: e.id,
+                                            name: e.name,
+                                            categoryName: e.categoryName,
+                                            price: e.price,
+                                            image: e.image,
+                                            quntitiy: e.quntitiy??1));
+                                  },
+                                  removeFromCart: () {
+                                    context
+                                        .read<HomeCubit>()
+                                        .removeProductFromCart(e.id!);
+                                  },
+                                  onDec: () => context
+                                      .read<HomeCubit>()
+                                      .decQuantityInFavorite(e),
+                                  onInc: () => context
+                                      .read<HomeCubit>()
+                                      .incQuantityInFavorite(e),
                                   productModel: e,
                                 ),
                               );
