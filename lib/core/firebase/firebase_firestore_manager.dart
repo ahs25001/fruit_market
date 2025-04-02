@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_market/core/models/product_model.dart';
 import 'package:fruit_market/core/models/subcategory_model.dart';
 import 'package:fruit_market/features/auth/data/models/user_model.dart';
+import 'package:fruit_market/features/home/data/models/favorite_model.dart';
 
 class FirebaseFirestoreManager {
   static FirebaseFirestoreManager? _instance;
@@ -57,5 +59,30 @@ class FirebaseFirestoreManager {
         .collection("Subcategories")
         .doc(subcategory.id)
         .update(subcategory.toJson());
+  }
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> getFavoriteList() {
+    return FirebaseFirestore.instance
+        .collection("Favorites")
+        .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+  }
+
+  void addProductToFavorite(FavoriteModel model) async {
+    var favoriteProductDoc =
+        FirebaseFirestore.instance.collection("Favorites").doc(model.id);
+    await favoriteProductDoc.set(model.toJson());
+  }
+
+  void removeProductFromFavorite(String modelId) async {
+    var favoriteProductDoc =
+        FirebaseFirestore.instance.collection("Favorites").doc(modelId);
+    await favoriteProductDoc.delete();
+  }
+
+  void updateFavoriteProduct(FavoriteModel newProduct) {
+    var favoriteProductDoc =
+        FirebaseFirestore.instance.collection("Favorites").doc(newProduct.id);
+    favoriteProductDoc.update(newProduct.toJson());
   }
 }

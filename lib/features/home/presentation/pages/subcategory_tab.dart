@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_market/core/models/subcategory_model.dart';
@@ -14,7 +15,9 @@ class SubcategoryTab extends StatelessWidget{
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       // shrinkWrap: true,
       itemCount: subcategories?.length??0,
-      itemBuilder: (context, index) =>   SubcategoryItem(subcategories?[index])
+      itemBuilder: (context, index) =>   SlideInRight(
+        duration: Duration(milliseconds: (index + 1) * 100),
+        child: SubcategoryItem(subcategories?[index]))
       ,
     );
   }

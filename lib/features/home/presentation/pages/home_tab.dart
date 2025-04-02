@@ -8,6 +8,7 @@ import 'package:fruit_market/features/add_data/presentation/pages/add_data_scree
 import 'package:fruit_market/features/home/presentation/cubit/cubit/home_cubit.dart';
 import 'package:fruit_market/features/home/presentation/pages/subcategory_tab.dart';
 import 'package:fruit_market/features/home/presentation/widgets/catigory_item.dart';
+import 'package:fruit_market/features/home/presentation/widgets/loading_data.dart';
 import 'package:fruit_market/features/home/presentation/widgets/search_field.dart';
 import 'package:get/get.dart' as getx;
 
@@ -26,33 +27,16 @@ class HomeTab extends StatelessWidget {
           Expanded(
             flex: 5,
             child: Container(
-              // color: Colors.white,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.white,
-                    Colors.grey.shade400
-                  ])),
-            ),
-          ),
+              color: Colors.white,
+              
+          ),)
         ],
       ),
       SafeArea(
         child: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 25.h,
@@ -123,8 +107,10 @@ class HomeTab extends StatelessWidget {
                 SizedBox(
                   height: 20.h,
                 ),
-                SlideInDown(
-                  child: SearchField(),
+                Center(
+                  child: SlideInDown(
+                    child: SearchField(),
+                  ),
                 ),
                 SizedBox(
                   height: 25.h,
@@ -160,12 +146,8 @@ class HomeTab extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                (state.status == HomeStatus.loading)
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: primaryColor,
-                        ),
-                      )
+                (state.status == HomeStatus.getSubcategoriesLoading)
+                    ? LoadingData()
                     : Expanded(
                         child: TabBarView(
                             physics: const NeverScrollableScrollPhysics(),

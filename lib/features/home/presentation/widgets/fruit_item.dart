@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,20 +8,25 @@ import 'package:fruit_market/core/utils/app_colors.dart';
 import 'package:fruit_market/features/products_details/presentation/pages/product_details_screen.dart';
 import 'package:get/get.dart' as getx;
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+
 // ignore: must_be_immutable
 class FruitItem extends StatelessWidget {
   bool isFavorite;
   ProductModel? productModel;
-  FruitItem({super.key, required this.isFavorite,required this.productModel});
+  Function addProductToFavorite;
+  Function removeProductFromFavorite;
+  FruitItem(
+      {super.key,
+      required this.isFavorite,
+      required this.removeProductFromFavorite,
+      required this.productModel,
+      required this.addProductToFavorite});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        getx.Get.to(
-           ()=> ProductDetailsScreen(
-              productModel: productModel
-            ),
+        getx.Get.to(() => ProductDetailsScreen(productModel: productModel),
             transition: getx.Transition.rightToLeftWithFade);
       },
       child: Column(
@@ -30,11 +36,11 @@ class FruitItem extends StatelessWidget {
           Stack(
             children: [
               Hero(
-                tag: productModel?.image??"",
+                tag: productModel?.image ?? "",
                 child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(17.r)),
                     child: FancyShimmerImage(
-                      imageUrl:productModel?.image??"",
+                      imageUrl: productModel?.image ?? "",
                       width: 118.w,
                       height: 143.h,
                       boxFit: BoxFit.cover,
@@ -46,17 +52,26 @@ class FruitItem extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 15.r,
                   backgroundColor: Colors.white,
-                  child: AnimatedSwitcher(
-                    duration: Duration(
-                      milliseconds: 300,
-                    ),
-                    child: isFavorite
-                        ? Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          )
-                        : SvgPicture.asset("assets/images/emty_hart.svg"),
-                  ),
+                  child: isFavorite
+                      ? InkWell(
+                          onTap: () {
+                            removeProductFromFavorite();
+                          },
+                          child: ElasticIn(
+                            curve: Curves.elasticOut,
+                            duration: Duration(milliseconds: 600),
+                            child: Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
+                          ),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            addProductToFavorite();
+                          },
+                          child: SvgPicture.asset(
+                              "assets/images/emty_hart.svg")),
                 ),
               )
             ],
@@ -66,12 +81,12 @@ class FruitItem extends StatelessWidget {
           ),
           StarRating(
             allowHalfRating: true,
-            rating: (productModel?.rating??0).toDouble(),
+            rating: (productModel?.rating ?? 0).toDouble(),
             color: rateColor,
             size: 20.sp,
           ),
           Text(
-           productModel?.name??"",
+            productModel?.name ?? "",
             style: TextStyle(
               color: Colors.black,
               fontSize: 16.sp,
@@ -82,7 +97,7 @@ class FruitItem extends StatelessWidget {
             height: 9.h,
           ),
           Text(
-            "EGP ${productModel?.price??"0"} Per/kg",
+            "EGP ${productModel?.price ?? "0"} Per/kg",
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 14.sp,

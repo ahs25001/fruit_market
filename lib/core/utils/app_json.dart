@@ -1,0 +1,1 @@
+String emptyList = "assets/json/empty_list.json";

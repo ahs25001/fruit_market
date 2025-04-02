@@ -1,13 +1,124 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-    
-class CartTab extends StatelessWidget {
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fruit_market/core/utils/app_colors.dart';
+import 'package:fruit_market/core/utils/app_json.dart';
+import 'package:fruit_market/features/home/presentation/cubit/cubit/home_cubit.dart';
+import 'package:fruit_market/features/home/presentation/widgets/cart_item.dart';
+import 'package:lottie/lottie.dart';
 
-  const CartTab({ Key? key }) : super(key: key);
-  
+class CartTab extends StatelessWidget {
+  const CartTab({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Placeholder(
-      color: Colors.red,
+    return Stack(
+      children: [
+        Column(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: primaryColor,
+              ),
+            ),
+            Expanded(
+              flex: 6,
+              child: Container(
+                color: Colors.white,
+              ),
+            )
+          ],
+        ),
+        SafeArea(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 24.w,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: Text(
+                "Shopping Cart",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600),
+              ),
+            ),
+            SizedBox(
+              height: 30.h,
+            ),
+            BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                return (state.favoriteProducts == null ||
+                        state.favoriteProducts!.isEmpty)
+                    ? Center(child: Lottie.asset(emptyList))
+                    : Expanded(
+                        child: ListView(
+                        children: [
+                          ...state.favoriteProducts!.map((e) {
+                            int currentIndex =
+                                state.favoriteProducts!.indexOf(e);
+                            if (currentIndex == 0 ||
+                                e.categoryName !=
+                                    state.favoriteProducts![currentIndex - 1]
+                                        .categoryName) {
+                              return Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(bottom: 17.w),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 7.h, horizontal: 20.w),
+                                    color: Colors.grey.shade300,
+                                    width: double.infinity,
+                                    child: Text(
+                                      e.categoryName ?? "",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18.sp,
+                                      ),
+                                    ),
+                                  ),
+                                  FadeInRight(
+                                    duration: Duration(
+                                        milliseconds: (currentIndex + 1) * 100),
+                                    child: CartItem(
+                                      onInc: () {
+                                        
+                                      },
+                                      onDec: () {
+                                        
+                                      },
+                                      productModel: e,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                            return FadeInRight(
+                              duration: Duration(
+                                  milliseconds: (currentIndex + 1) * 100),
+                              child: CartItem(
+                                onDec: () {
+                                  
+                                },
+                                onInc: () {
+                                  
+                                },
+                                productModel: e,
+                              ),
+                            );
+                          })
+                        ],
+                      ));
+              },
+            )
+          ],
+        ))
+      ],
     );
   }
 }
