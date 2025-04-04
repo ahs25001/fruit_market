@@ -168,8 +168,14 @@ class HomeCubit extends Cubit<HomeState> {
               (e) => e.id ?? "",
             )
             .toList();
+        num totalPrice = 0;
+        for (var product in sortedCartProducts) {
+          totalPrice +=
+              num.parse(product.price ?? "0") * (product.quntitiy ?? 1);
+        }
         emit(state.copyWith(
           cartIds: cartIds,
+          totalPrice: totalPrice,
           cartProducts: sortedCartProducts,
         ));
       },

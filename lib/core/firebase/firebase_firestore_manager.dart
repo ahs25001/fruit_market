@@ -108,7 +108,7 @@ class FirebaseFirestoreManager {
 
   void updateCart(CartModel newCart) {
     var favoriteProductDoc =
-        FirebaseFirestore.instance.collection("Cart").doc(newCart.uid);
+        FirebaseFirestore.instance.collection("Cart").doc(newCart.id);
     favoriteProductDoc.update(newCart.toJson());
   }
 }

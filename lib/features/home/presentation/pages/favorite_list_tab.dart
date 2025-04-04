@@ -55,11 +55,11 @@ class FavoriteListTab extends StatelessWidget {
               ),
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
-                  return (state.favoriteProducts == null ||
+                  return  Expanded(
+                          child: (state.favoriteProducts == null ||
                           state.favoriteProducts!.isEmpty)
                       ? Center(child: Lottie.asset(emptyList))
-                      : Expanded(
-                          child: ListView(
+                      :ListView(
                           children: [
                             ...state.favoriteProducts!.map((e) {
                               int currentIndex =
@@ -89,6 +89,12 @@ class FavoriteListTab extends StatelessWidget {
                                           milliseconds:
                                               (currentIndex + 1) * 100),
                                       child: FavoriteItem(
+                                        removeProductFromFavoriteList: () {
+                                          context
+                                              .read<HomeCubit>()
+                                              .removeProductFromFavorite(
+                                                  e.id ?? "");
+                                        },
                                         isInCart:
                                             state.cartIds?.contains(e.id) ??
                                                 false,
@@ -103,7 +109,7 @@ class FavoriteListTab extends StatelessWidget {
                                                   categoryName: e.categoryName,
                                                   price: e.price,
                                                   image: e.image,
-                                                  quntitiy: e.quntitiy??1));
+                                                  quntitiy: e.quntitiy ?? 1));
                                         },
                                         removeFromCart: () {
                                           context
@@ -126,6 +132,11 @@ class FavoriteListTab extends StatelessWidget {
                                 duration: Duration(
                                     milliseconds: (currentIndex + 1) * 100),
                                 child: FavoriteItem(
+                                  removeProductFromFavoriteList: () {
+                                    context
+                                        .read<HomeCubit>()
+                                        .removeProductFromFavorite(e.id ?? "");
+                                  },
                                   isInCart:
                                       state.cartIds?.contains(e.id) ?? false,
                                   addToCart: () {
@@ -138,7 +149,7 @@ class FavoriteListTab extends StatelessWidget {
                                             categoryName: e.categoryName,
                                             price: e.price,
                                             image: e.image,
-                                            quntitiy: e.quntitiy??1));
+                                            quntitiy: e.quntitiy ?? 1));
                                   },
                                   removeFromCart: () {
                                     context

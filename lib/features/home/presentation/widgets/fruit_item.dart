@@ -12,12 +12,14 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 // ignore: must_be_immutable
 class FruitItem extends StatelessWidget {
   bool isFavorite;
+  bool isInCart;
   ProductModel? productModel;
   Function addProductToFavorite;
   Function removeProductFromFavorite;
   FruitItem(
       {super.key,
       required this.isFavorite,
+      required this.isInCart,
       required this.removeProductFromFavorite,
       required this.productModel,
       required this.addProductToFavorite});
@@ -26,7 +28,7 @@ class FruitItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        getx.Get.to(() => ProductDetailsScreen(productModel: productModel),
+        getx.Get.to(() => ProductDetailsScreen(productModel: productModel,isInCart: isInCart,),
             transition: getx.Transition.rightToLeftWithFade);
       },
       child: Column(

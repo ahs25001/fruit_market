@@ -30,9 +30,19 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
+      
       splitScreenMode: true,
-      builder: (context, child) => GetMaterialApp(
+      builder: (context, child) => GetMaterialApp( 
+        builder: (context, child){
+             final MediaQueryData data = MediaQuery.of(context);
+    return MediaQuery(
+      data: data.copyWith(
+        textScaler: TextScaler.linear(1)),
+        child: child!,
+       );
+        } ,
         theme: ThemeData(
+          
             fontFamily: poppinsFont,
             scaffoldBackgroundColor: Colors.white,
             textSelectionTheme: TextSelectionThemeData(

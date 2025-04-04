@@ -47,6 +47,8 @@ class SubcategoryItem extends StatelessWidget {
           itemBuilder: (context, index) => BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               return FruitItem(
+                isInCart: state.cartIds!
+                    .contains(subCategoryModel?.products?[index].id),
                 addProductToFavorite: () {
                   context
                       .read<HomeCubit>()

@@ -27,10 +27,12 @@ class HomeState {
   List<String>? favoriteProductsIds;
   List<CartModel>? cartProducts;
   List<String>? cartIds;
+  num? totalPrice;
   HomeState(
       {this.status,
       this.currentTab,
       this.currentPage,
+      this.totalPrice,
       this.cartIds,
       this.cartProducts,
       this.favoriteProductsIds,
@@ -42,6 +44,7 @@ class HomeState {
 
   HomeState copyWith(
       {HomeStatus? status,
+      num? totalPrice,
       int? currentPage,
       List<String>? cartIds,
       int? currentTab,
@@ -53,6 +56,7 @@ class HomeState {
       List<SubCategoryModel?>? vegetablesSubCategories,
       List<SubCategoryModel?>? dryFruitsSubCategories}) {
     return HomeState(
+      totalPrice: totalPrice ?? this.totalPrice,
         cartIds: cartIds ?? this.cartIds,
         cartProducts: cartProducts ?? this.cartProducts,
         currentTab: currentTab ?? this.currentTab,
