@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fruit_market/core/utils/app_constants.dart';
 import 'package:fruit_market/features/auth/data/models/user_model.dart';
 
@@ -10,8 +11,12 @@ class AuthRepoImpl implements AuthRepo {
       required String id,
       required String phone,
       required String address}) async {
-    await firebaseFirestoreManager
-        .addUser(UserModel(name: name, phone: phone, address: address,id: id  ));
+    await firebaseFirestoreManager.addUser(UserModel(
+        name: name,
+        phone: phone,
+        address: address,
+        id: id,
+        email: FirebaseAuth.instance.currentUser!.email ?? "eeeee"));
   }
 
   @override

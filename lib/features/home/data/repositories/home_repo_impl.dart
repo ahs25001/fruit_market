@@ -5,6 +5,7 @@ import 'package:fruit_market/core/errors/errors.dart';
 import 'package:fruit_market/core/models/product_model.dart';
 import 'package:fruit_market/core/models/subcategory_model.dart';
 import 'package:fruit_market/core/utils/app_constants.dart';
+import 'package:fruit_market/features/auth/data/models/user_model.dart';
 import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/home/data/models/favorite_model.dart';
 import 'package:fruit_market/features/home/domain/repositories/home_repo.dart';
@@ -99,6 +100,16 @@ class HomeRepoImpl implements HomeRepo {
     try {
       firebaseFirestoreManager.updateCart(cartModel);
       return Right(null);
+    } catch (e) {
+      return Left(RemoteError(massage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Errors, UserModel?>> getUser(String id) async {
+    try {
+      var user = await firebaseFirestoreManager.getUser(id);
+      return Right(user);
     } catch (e) {
       return Left(RemoteError(massage: e.toString()));
     }

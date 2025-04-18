@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.53"
+  advanced_salomon_bottom_bar:
+    dependency: "direct main"
+    description:
+      name: advanced_salomon_bottom_bar
+      sha256: ab9cb525ea63a76c27f1f9d166aafe33038fab9c398bfbf1c9bfe68c85c1f0ea
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.4"
   animate_do:
     dependency: "direct main"
     description:
@@ -1165,6 +1173,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.12.1"
+  stacked_animated_list:
+    dependency: "direct main"
+    description:
+      name: stacked_animated_list
+      sha256: "9458df347a0bcee39c92e004ef9f7e4cd09750a5487cd79f43ec36261739301e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   storage_client:
     dependency: transitive
     description:

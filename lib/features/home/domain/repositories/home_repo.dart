@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:fruit_market/core/errors/errors.dart';
 import 'package:fruit_market/core/models/product_model.dart';
 import 'package:fruit_market/core/models/subcategory_model.dart';
+import 'package:fruit_market/features/auth/data/models/user_model.dart';
 import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/home/data/models/favorite_model.dart';
 
@@ -19,4 +20,5 @@ abstract class HomeRepo {
   Stream<QuerySnapshot<Map<String, dynamic>>> getCart();
   Future<Either<Errors, void>> removeProductFromCart(String modelId);
   Future<Either<Errors, void>> updateCart(CartModel cartModel);
+  Future<Either<Errors,UserModel?>> getUser(String id);
 }

@@ -1,3 +1,4 @@
+import 'package:advanced_salomon_bottom_bar/advanced_salomon_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => HomeCubit()..getSubcategories(),
+      create: (context) => HomeCubit()..getSubcategories()..getCurrentUser(),
       child: DefaultTabController(
         initialIndex: 1,
         length: 3,
@@ -20,72 +21,115 @@ class HomeScreen extends StatelessWidget {
           selector: (state) => state.currentTab,
           builder: (context, currentTab) {
             return Scaffold(
-              bottomNavigationBar: BottomNavigationBar(
-                selectedLabelStyle:
-                    TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500),
+              bottomNavigationBar: AdvancedSalomonBottomBar(
                 selectedItemColor: primaryColor,
-                type: BottomNavigationBarType.shifting,
+                itemShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.r)),
+                selectedColorOpacity: 1,
+                duration: Duration(milliseconds: 300),
+                
                 onTap: (value) => context.read<HomeCubit>().changeTab(value),
                 items: [
-                  BottomNavigationBarItem(
-                    backgroundColor: Colors.white,
+                  AdvancedSalomonBottomBarItem(
+                    selectedColor: primaryColor,
+
+                    unselectedColor: Colors.white,
                     icon: SvgPicture.asset(
                       homeTabIcon,
-                      color: currentTab == 0 ? primaryColor : borderColor,
+                      color: currentTab == 0 ? Colors.white : borderColor,
                     ),
-                    label: 'HOME',
-                  ),
-                  BottomNavigationBarItem(
-                    backgroundColor: Colors.white,
-                    icon: BlocBuilder<HomeCubit, HomeState>(
-                      builder: (context, state) {
-                        return badges.Badge(
-                          badgeAnimation: badges.BadgeAnimation.slide(
-                              curve: Curves.elasticOut,
-                              animationDuration: Duration(milliseconds: 1000)),
-                          badgeContent: Text(
-                            "${state.cartProducts?.length ?? 0}",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14.sp),
-                          ),
-                          child: SvgPicture.asset(
-                            cartTabIcon,
-                            color: currentTab == 1 ? primaryColor : borderColor,
-                          ),
-                        );
-                      },
+                    title: Text(
+                      'HOME',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
                     ),
-                    label: 'Shopping cart',
                   ),
-                  BottomNavigationBarItem(
-                    backgroundColor: Colors.white,
-                    icon: BlocBuilder<HomeCubit, HomeState>(
-                      builder: (context, state) {
-                        return badges.Badge(
-                          badgeAnimation: badges.BadgeAnimation.slide(
-                              curve: Curves.elasticOut,
-                              animationDuration: Duration(milliseconds: 1000)),
-                          badgeContent: Text(
-                            "${state.favoriteProductsIds?.length ?? 0}",
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 14.sp),
-                          ),
-                          child: SvgPicture.asset(
-                            favoriteTabIcon,
-                            color: currentTab == 2 ? primaryColor : borderColor,
-                          ),
-                        );
-                      },
+                  AdvancedSalomonBottomBarItem(
+                    selectedColor: primaryColor,
+                    unselectedColor: Colors.white,
+                    icon: Row(
+                      children: [
+                        BlocBuilder<HomeCubit, HomeState>(
+                          builder: (context, state) {
+                            return badges.Badge(
+                              badgeAnimation: badges.BadgeAnimation.slide(
+                                  curve: Curves.elasticOut,
+                                  animationDuration:
+                                      Duration(milliseconds: 1000)),
+                              badgeContent: Text(
+                                "${state.cartProducts?.length ?? 0}",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14.sp),
+                              ),
+                              child: SvgPicture.asset(
+                                cartTabIcon,
+                                color: currentTab == 1
+                                    ? Colors.white
+                                    : borderColor,
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        )
+                      ],
                     ),
-                    label: 'Favourite',
+                    title: Text(
+                      'Shopping cart',
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                    ),
                   ),
-                  BottomNavigationBarItem(
-                    backgroundColor: Colors.white,
+                  AdvancedSalomonBottomBarItem(
+                    icon: Row(
+                      children: [
+                        BlocBuilder<HomeCubit, HomeState>(
+                          builder: (context, state) {
+                            return badges.Badge(
+                              badgeAnimation: badges.BadgeAnimation.slide(
+                                  curve: Curves.elasticOut,
+                                  animationDuration:
+                                      Duration(milliseconds: 1000)),
+                              badgeContent: Text(
+                                "${state.favoriteProductsIds?.length ?? 0}",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14.sp),
+                              ),
+                              child: SvgPicture.asset(
+                                favoriteTabIcon,
+                                color: currentTab == 2
+                                    ? Colors.white
+                                    : borderColor,
+                              ),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          width: 5.w,
+                        )
+                      ],
+                    ),
+                    title: Text(
+                      'Favourite',
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                    ),
+                    selectedColor: primaryColor,
+                    unselectedColor: Colors.white,
+                  ),
+                  AdvancedSalomonBottomBarItem(
                     icon: SvgPicture.asset(
                       profileTabIcon,
-                      color: currentTab == 3 ? primaryColor : borderColor,
+                      color: currentTab == 3 ? Colors.white : borderColor,
                     ),
-                    label: 'My Account',
+                    title: Text(
+                      'My Account',
+                      style: TextStyle(color: Colors.white, fontSize: 14.sp),
+                    ),
+                    selectedColor: primaryColor,
+
+                    unselectedColor: Colors.white,
                   ),
                 ],
                 currentIndex: currentTab ?? 0,

@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -119,48 +120,48 @@ class ProductDetailsScreen extends StatelessWidget {
                   listener: (context, state) {
                     if (state.status ==
                         ProductDetailsStatus.addProductToCartSuccess) {
-                      getx.Get.back();
+                      // getx.Get.back();
                       isInCart = true;
                       getx.Get.showSnackbar(getx.GetSnackBar(
+                        snackPosition: getx.SnackPosition.TOP,
+                        margin: EdgeInsets.only(top: 100.h),
                         backgroundColor: primaryColor,
-                        duration: Duration(seconds: 1),
+                        duration: Duration(seconds: 2),
                         message: "Product added to cart successfuly",
                       ));
-                    }else if (state.status ==
-                        ProductDetailsStatus.removeProductFromCartSuccess){
-                              getx.Get.back();
-                          isInCart = false;
-                          getx.Get.showSnackbar(getx.GetSnackBar(
-                            backgroundColor: primaryColor,
-                            duration: Duration(seconds: 1),
-                            message: "Product removed from cart successfuly",
-                          ));
-
-                    } else if (state.status == ProductDetailsStatus.error) {
-                      getx.Get.back();
-                      // isInCart = true;
+                    } else if (state.status ==
+                        ProductDetailsStatus.removeProductFromCartSuccess) {
+                      // getx.Get.back();
+                      isInCart = false;
                       getx.Get.showSnackbar(getx.GetSnackBar(
-                        backgroundColor: Colors.red,
-                        duration: Duration(seconds: 1),
-                        message: "Something is wrong!",
+                        snackPosition: getx.SnackPosition.TOP,
+                        margin: EdgeInsets.only(top: 100.h),
+                        backgroundColor: primaryColor,
+                        duration: Duration(seconds: 2),
+                        message: "Product removed from cart successfuly",
                       ));
-                    } else if (state.status == ProductDetailsStatus.loading) {
-                      showDialog(
-                        barrierDismissible: false,
-                        context: context,
-                        builder: (context) => PopScope(
-                          canPop: false,
-                          child: AlertDialog(
-                            content: Center(
-                              child: CircularProgressIndicator(
-                                color: primaryColor,
-                              ),
-                            ),
-                            backgroundColor: Colors.transparent,
-                          ),
-                        ),
-                      );
+                    } else if (state.status == ProductDetailsStatus.error) {
+                      // getx.Get.back();
+                      // isInCart = true;
+                   
                     }
+                    // else if (state.status == ProductDetailsStatus.loading) {
+                    //   showDialog(
+                    //     barrierDismissible: false,
+                    //     context: context,
+                    //     builder: (context) => PopScope(
+                    //       canPop: false,
+                    //       child: AlertDialog(
+                    //         content: Center(
+                    //           child: CircularProgressIndicator(
+                    //             color: primaryColor,
+                    //           ),
+                    //         ),
+                    //         backgroundColor: Colors.transparent,
+                    //       ),
+                    //     ),
+                    //   );
+                    // }
                   },
                   builder: (context, state) {
                     return Row(
@@ -171,51 +172,64 @@ class ProductDetailsScreen extends StatelessWidget {
                               fontSize: 16.sp, fontWeight: FontWeight.w500),
                         ),
                         Spacer(),
-                        isInCart
-                            ? ElevatedButton(
-                                onPressed: () {
-                                  context
-                                      .read<ProductDetailsCubit>().removeProductfromCart(
-                                          productModel?.id ?? "");
-                                      
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 40.r, vertical: 11.r),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.r))),
-                                child: Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                ))
-                            : ElevatedButton(
-                                onPressed: () {
-                                  context
-                                      .read<ProductDetailsCubit>()
-                                      .addProductToCart(CartModel(
-                                          categoryName:
-                                              productModel?.categoryName,
-                                          id: productModel?.id,
-                                          image: productModel?.image,
-                                          name: productModel?.name,
-                                          price: productModel?.price,
-                                          quntitiy: 1,
-                                          uid: FirebaseAuth
-                                              .instance.currentUser!.uid));
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: primaryColor,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 40.r, vertical: 11.r),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(5.r))),
-                                child: Text(
-                                  "Buy Now",
-                                  style: TextStyle(color: Colors.white),
-                                ))
+                        (state.status == ProductDetailsStatus.loading)
+                            ? CircularProgressIndicator(
+                                color: primaryColor,
+                              )
+                            : isInCart
+                                ? ElasticInRight(
+                                    duration: Duration(seconds: 1),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ProductDetailsCubit>()
+                                              .removeProductfromCart(
+                                                  productModel?.id ?? "");
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.red,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 40.r,
+                                                vertical: 11.r),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        5.r))),
+                                        child: Icon(
+                                          Icons.delete,
+                                          color: Colors.white,
+                                        )),
+                                  )
+                                : ElasticInLeft(
+                                  curve: Curves.elasticOut,
+                                    duration: Duration(seconds: 1),
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        context
+                                            .read<ProductDetailsCubit>()
+                                            .addProductToCart(CartModel(
+                                                categoryName:
+                                                    productModel?.categoryName,
+                                                id: productModel?.id,
+                                                image: productModel?.image,
+                                                name: productModel?.name,
+                                                price: productModel?.price,
+                                                quntitiy: 1,
+                                                uid: FirebaseAuth
+                                                    .instance.currentUser!.uid));
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: primaryColor,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 40.r, vertical: 11.r),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5.r))),
+                                      child: Text(
+                                        "Buy Now",
+                                        style: TextStyle(color: Colors.white),
+                                      )),
+                                ),
                       ],
                     );
                   },

@@ -4,6 +4,8 @@ enum HomeStatus {
   initial,
   getSubcategoriesLoading,
   getSubcategoriesSuccess,
+  getUserLoading,
+  getUserSuccess,
   addProductToFavoriteSuccess,
   addProductToCartSuccess,
   changeQuntityLoading,

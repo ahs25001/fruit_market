@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fruit_market/core/models/product_model.dart';
 import 'package:fruit_market/core/models/subcategory_model.dart';
+import 'package:fruit_market/core/utils/app_constants.dart';
 import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/home/data/models/favorite_model.dart';
 import 'package:fruit_market/features/home/data/repositories/home_repo_impl.dart';
@@ -16,6 +18,22 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(currentPage: index));
   }
 
+  void getCurrentUser() {
+    emit(state.copyWith(status: HomeStatus.getUserLoading));
+
+    HomeRepo homeRepo = HomeRepoImpl();
+    homeRepo.getUser(FirebaseAuth.instance.currentUser!.uid).then((response) {
+      response.fold(
+        (l) =>
+            emit(state.copyWith(status: HomeStatus.error, massage: l.massage)),
+        (user) {
+          currentUser = user;
+          emit(state.copyWith(status: HomeStatus.getUserSuccess));
+        },
+      );
+    });
+  }
+
   void getSubcategories() async {
     emit(state.copyWith(status: HomeStatus.getSubcategoriesLoading));
     HomeRepo homeRepo = HomeRepoImpl();
@@ -27,7 +45,6 @@ class HomeCubit extends Cubit<HomeState> {
       var response = await homeRepo.getSubCategories(category);
       response.fold(
         (error) {
-          print(error.massage);
           emit(
               state.copyWith(status: HomeStatus.error, massage: error.massage));
         },
@@ -43,7 +60,6 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
     if (state.status != HomeStatus.error) {
-      print("Sucessssss");
       emit(state.copyWith(
           status: HomeStatus.getSubcategoriesSuccess,
           dryFruitsSubCategories: dryFruitsSubCategories,

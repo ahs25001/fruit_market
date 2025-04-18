@@ -28,12 +28,25 @@ class HomeTab extends StatelessWidget {
             flex: 5,
             child: Container(
               color: Colors.white,
-              
-          ),)
+            ),
+          )
         ],
       ),
       SafeArea(
-        child: BlocBuilder<HomeCubit, HomeState>(
+        child: BlocConsumer<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state.status == HomeStatus.error) {
+              getx.Get.showSnackbar(getx.GetSnackBar(
+                snackPosition: getx.SnackPosition.BOTTOM,
+                backgroundColor: Colors.red,
+                duration: Duration(seconds: 2),
+                message: state.massage,
+              ));
+            }
+          },
+          buildWhen: (previous, current) =>
+              current.status == HomeStatus.getSubcategoriesLoading ||
+              current.status == HomeStatus.getSubcategoriesSuccess,
           builder: (context, state) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +159,8 @@ class HomeTab extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20.h),
-                (state.status == HomeStatus.getSubcategoriesLoading)
+                (state.status == HomeStatus.getSubcategoriesLoading ||
+                        state.status == HomeStatus.getUserLoading)
                     ? LoadingData()
                     : Expanded(
                         child: TabBarView(

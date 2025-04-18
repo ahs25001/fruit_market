@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fruit_market/core/firebase/firebase_auth_manager.dart';
 import 'package:fruit_market/core/firebase/firebase_firestore_manager.dart';
+import 'package:fruit_market/features/auth/data/models/user_model.dart';
 import 'package:fruit_market/features/home/presentation/pages/cart_tab.dart';
 import 'package:fruit_market/features/home/presentation/pages/favorite_list_tab.dart';
 import 'package:fruit_market/features/home/presentation/pages/home_tab.dart';
@@ -61,3 +62,4 @@ List<PageViewModel> onBoardingPages = [
 ];
 FirebaseAuthManager firebaseAuthManager = FirebaseAuthManager.instance;
 FirebaseFirestoreManager firebaseFirestoreManager = FirebaseFirestoreManager.instance;
+UserModel? currentUser;
