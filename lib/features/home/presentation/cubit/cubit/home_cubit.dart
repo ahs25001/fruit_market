@@ -9,6 +9,7 @@ import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/home/data/models/favorite_model.dart';
 import 'package:fruit_market/features/home/data/repositories/home_repo_impl.dart';
 import 'package:fruit_market/features/home/domain/repositories/home_repo.dart';
+import 'package:fruit_market/features/orders/data/models/order_model.dart';
 import 'package:meta/meta.dart';
 part 'home_state.dart';
 
@@ -105,9 +106,9 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  void addProductToFavorite(ProductModel? productModel) async {
+  void addProductToFavorite(ProductModel? productModel,String subcategoryId) async {
     HomeRepo homeRepo = HomeRepoImpl();
-    var response = await homeRepo.addProductToFavoriteList(productModel);
+    var response = await homeRepo.addProductToFavoriteList(productModel,subcategoryId);
     response.fold(
       (l) => emit(state.copyWith(status: HomeStatus.error, massage: l.massage)),
       (r) =>
@@ -248,6 +249,27 @@ class HomeCubit extends Cubit<HomeState> {
         },
       );
     }
+  }
+
+  void placeOrder() {
+    emit(state.copyWith(status: HomeStatus.placeOrderLoading));
+    HomeRepo homeRepo = HomeRepoImpl();
+    OrderModel orderModel = OrderModel(
+      dateInMilleSeconds: DateTime.now().millisecondsSinceEpoch,
+      products: state.cartProducts ?? [],
+      totalPrice: state.totalPrice ?? 0,
+      uid: currentUser?.id ?? "",
+    );
+    homeRepo.placeOrders(orderModel).then((value) {
+      value.fold((error) {
+        emit(state.copyWith(status: HomeStatus.error, massage: error.massage));
+      }, (r) {
+        emit(state.copyWith(status: HomeStatus.placeOrderSuccess));
+        for (var model in state.cartProducts ?? []) {
+          removeProductFromCart(model.id ?? "");
+        }
+      });
+    });
   }
 
   HomeCubit() : super(HomeInitial()) {

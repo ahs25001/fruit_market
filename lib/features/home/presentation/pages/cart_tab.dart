@@ -7,6 +7,7 @@ import 'package:fruit_market/core/utils/app_json.dart';
 import 'package:fruit_market/features/home/presentation/cubit/cubit/home_cubit.dart';
 import 'package:fruit_market/features/home/presentation/widgets/cart_item.dart';
 import 'package:lottie/lottie.dart';
+import 'package:get/get.dart' as getx;
 
 class CartTab extends StatelessWidget {
   const CartTab({Key? key}) : super(key: key);
@@ -57,53 +58,62 @@ class CartTab extends StatelessWidget {
               },
               builder: (context, totalPrice) {
                 return AnimatedSwitcher(
-                    duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 300),
                   transitionBuilder: (child, animation) => SizeTransition(
-                    sizeFactor: animation,
-                    axis: Axis.vertical,
-                 
-                    child: child),
-                  child: (totalPrice==null||totalPrice==0)?SizedBox():SlideInDown(
-                    duration: Duration(milliseconds: 300),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.location_on,
-                            color: borderColor,
-                            size: 20.sp,
-                          ),
-                          Spacer(),
-                          SizedBox(
-                            width: 161.w,
-                            child: Text(
-                              " 440001  Nagpur ,Maharashtra",
-                              style: TextStyle(
-                                fontSize: 14.sp,
-                              ),
+                      sizeFactor: animation, axis: Axis.vertical, child: child),
+                  child: (totalPrice == null || totalPrice == 0)
+                      ? SizedBox()
+                      : SlideInDown(
+                          duration: Duration(milliseconds: 300),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: borderColor,
+                                  size: 20.sp,
+                                ),
+                                Spacer(),
+                                SizedBox(
+                                  width: 161.w,
+                                  child: Text(
+                                    " 440001  Nagpur ,Maharashtra",
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                    ),
+                                  ),
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.keyboard_arrow_down_sharp,
+                                  color: Colors.black,
+                                  size: 20.sp,
+                                ),
+                                Spacer(),
+                                Text("Change Address",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 12.sp,
+                                    )),
+                              ],
                             ),
                           ),
-                          Spacer(),
-                          Icon(
-                            Icons.keyboard_arrow_down_sharp,
-                            color: Colors.black,
-                            size: 20.sp,
-                          ),
-                          Spacer(),
-                          Text("Change Address",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 12.sp,
-                              )),
-                        ],
-                      ),
-                    ),
-                  ),
+                        ),
                 );
               },
             ),
-            BlocBuilder<HomeCubit, HomeState>(
+            BlocConsumer<HomeCubit, HomeState>(
+              listener: (context, state) {
+                if (state.status == HomeStatus.placeOrderSuccess) {
+                  getx.Get.showSnackbar(getx.GetSnackBar(
+                    snackPosition: getx.SnackPosition.BOTTOM,
+                    backgroundColor: primaryColor,
+                    duration: Duration(seconds: 2),
+                    message: "Order placed successfuly",
+                  ));
+                }
+              },
               builder: (context, state) {
                 return Expanded(
                     child: (state.favoriteProducts == null ||
@@ -215,7 +225,9 @@ class CartTab extends StatelessWidget {
                                                 BorderRadius.circular(10.r)),
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 30.w, vertical: 10.h)),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      context.read<HomeCubit>().placeOrder();
+                                    },
                                     child: Text(
                                       "Place Order",
                                       style: TextStyle(color: Colors.white),

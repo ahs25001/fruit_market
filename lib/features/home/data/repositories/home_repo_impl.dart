@@ -9,6 +9,7 @@ import 'package:fruit_market/features/auth/data/models/user_model.dart';
 import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/home/data/models/favorite_model.dart';
 import 'package:fruit_market/features/home/domain/repositories/home_repo.dart';
+import 'package:fruit_market/features/orders/data/models/order_model.dart';
 
 class HomeRepoImpl implements HomeRepo {
   @override
@@ -30,9 +31,10 @@ class HomeRepoImpl implements HomeRepo {
 
   @override
   Future<Either<Errors, void>> addProductToFavoriteList(
-      ProductModel? productModel) async {
+      ProductModel? productModel,String subcategoryId) async {
     try {
       FavoriteModel model = FavoriteModel(
+          subcategoryId: productModel?.subCategoryName,
           id: productModel?.id,
           categoryName: productModel?.categoryName,
           image: productModel?.image,
@@ -110,6 +112,16 @@ class HomeRepoImpl implements HomeRepo {
     try {
       var user = await firebaseFirestoreManager.getUser(id);
       return Right(user);
+    } catch (e) {
+      return Left(RemoteError(massage: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Errors, void>> placeOrders(OrderModel order) async {
+    try {
+      firebaseFirestoreManager.addOrder(order);
+      return Right(null);
     } catch (e) {
       return Left(RemoteError(massage: e.toString()));
     }

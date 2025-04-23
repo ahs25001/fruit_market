@@ -10,6 +10,8 @@ import 'package:fruit_market/core/utils/app_images.dart';
 import 'package:fruit_market/features/home/presentation/cubit/cubit/home_cubit.dart';
 import 'package:fruit_market/features/home/presentation/widgets/feature_divider.dart';
 import 'package:fruit_market/features/home/presentation/widgets/profile_feature_item.dart';
+import 'package:fruit_market/features/orders/presentation/pages/orders_screen.dart';
+import 'package:get/get.dart' as getx;
 import 'package:shimmer/shimmer.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -147,7 +149,9 @@ class ProfileTab extends StatelessWidget {
                   FadeInRight(
                     duration: Duration(milliseconds: 100),
                     child: ProfileFeatureItem(
-                      onTab: () {},
+                      onTab: () {
+                        getx.Get.to(()=>OrdersScreen(),transition: getx.Transition.rightToLeft);
+                      },
                       imagePath: ordarsIcon,
                       title: "My Orders",
                     ),

@@ -47,12 +47,13 @@ class SubcategoryItem extends StatelessWidget {
           itemBuilder: (context, index) => BlocBuilder<HomeCubit, HomeState>(
             builder: (context, state) {
               return FruitItem(
+                subcategoryId: subCategoryModel?.id,
                 isInCart: state.cartIds!
                     .contains(subCategoryModel?.products?[index].id),
                 addProductToFavorite: () {
-                  context
-                      .read<HomeCubit>()
-                      .addProductToFavorite(subCategoryModel?.products?[index]);
+                  context.read<HomeCubit>().addProductToFavorite(
+                      subCategoryModel?.products?[index],
+                      subCategoryModel?.id ?? "");
                 },
                 removeProductFromFavorite: () {
                   context.read<HomeCubit>().removeProductFromFavorite(

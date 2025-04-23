@@ -14,11 +14,13 @@ class FruitItem extends StatelessWidget {
   bool isFavorite;
   bool isInCart;
   ProductModel? productModel;
+  String? subcategoryId;
   Function addProductToFavorite;
   Function removeProductFromFavorite;
   FruitItem(
       {super.key,
       required this.isFavorite,
+      required this.subcategoryId,
       required this.isInCart,
       required this.removeProductFromFavorite,
       required this.productModel,
@@ -28,7 +30,12 @@ class FruitItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        getx.Get.to(() => ProductDetailsScreen(productModel: productModel,isInCart: isInCart,),
+        getx.Get.to(
+            () => ProductDetailsScreen(
+                  subcategoryId: subcategoryId ?? "",
+                  productModel: productModel,
+                  isInCart: isInCart,
+                ),
             transition: getx.Transition.rightToLeftWithFade);
       },
       child: Column(
@@ -72,8 +79,8 @@ class FruitItem extends StatelessWidget {
                           onTap: () {
                             addProductToFavorite();
                           },
-                          child: SvgPicture.asset(
-                              "assets/images/emty_hart.svg")),
+                          child:
+                              SvgPicture.asset("assets/images/emty_hart.svg")),
                 ),
               )
             ],

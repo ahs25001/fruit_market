@@ -5,10 +5,12 @@ class FavoriteModel {
   String? price;
   num? quntitiy;
   String ? categoryName;
+  String ? subcategoryId;
   String? image;
   num? rating;
   FavoriteModel(
       {this.id,
+       this.subcategoryId,
       this.name,
        this.categoryName,
       this.rating,
@@ -19,6 +21,7 @@ class FavoriteModel {
   FavoriteModel.fromJson(Map<String, dynamic> json) {
     id = json["id"];
     categoryName = json["categoryName"];
+    subcategoryId = json["subcategoryId"];
     uid = json["uid"];
     rating = json["rating"];
     name = json["name"];
@@ -28,6 +31,7 @@ class FavoriteModel {
   }
   Map<String, dynamic> toJson() => {
         'id': id,
+        'subcategoryId': subcategoryId,
         'name': name,
         'categoryName': categoryName,
         'uid': uid,

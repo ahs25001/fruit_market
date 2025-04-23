@@ -12,6 +12,8 @@ enum HomeStatus {
   changeQuntitySuccess,
   removeProductFromFavoriteSuccess,
   removeProductFromCartSuccess,
+  placeOrderLoading,
+  placeOrderSuccess,
   error
 }
 
@@ -58,7 +60,7 @@ class HomeState {
       List<SubCategoryModel?>? vegetablesSubCategories,
       List<SubCategoryModel?>? dryFruitsSubCategories}) {
     return HomeState(
-      totalPrice: totalPrice ?? this.totalPrice,
+        totalPrice: totalPrice ?? this.totalPrice,
         cartIds: cartIds ?? this.cartIds,
         cartProducts: cartProducts ?? this.cartProducts,
         currentTab: currentTab ?? this.currentTab,

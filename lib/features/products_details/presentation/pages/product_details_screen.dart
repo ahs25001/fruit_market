@@ -1,11 +1,11 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fruit_market/core/models/product_model.dart';
 import 'package:fruit_market/core/utils/app_colors.dart';
+import 'package:fruit_market/core/utils/app_constants.dart';
 import 'package:fruit_market/features/home/data/models/cart_model.dart';
 import 'package:fruit_market/features/products_details/presentation/cubit/product_details_cubit.dart';
 import 'package:get/get.dart' as getx;
@@ -14,8 +14,9 @@ import 'package:get/get.dart' as getx;
 class ProductDetailsScreen extends StatelessWidget {
   ProductModel? productModel;
   bool isInCart;
+  String subcategoryId;
   ProductDetailsScreen(
-      {Key? key, required this.isInCart, required this.productModel})
+      {Key? key, required this.isInCart, required this.productModel ,required this.subcategoryId})
       : super(key: key);
 
   @override
@@ -143,7 +144,6 @@ class ProductDetailsScreen extends StatelessWidget {
                     } else if (state.status == ProductDetailsStatus.error) {
                       // getx.Get.back();
                       // isInCart = true;
-                   
                     }
                     // else if (state.status == ProductDetailsStatus.loading) {
                     //   showDialog(
@@ -201,35 +201,38 @@ class ProductDetailsScreen extends StatelessWidget {
                                         )),
                                   )
                                 : ElasticInLeft(
-                                  curve: Curves.elasticOut,
+                                    curve: Curves.elasticOut,
                                     duration: Duration(seconds: 1),
-                                  child: ElevatedButton(
-                                      onPressed: () {
-                                        context
-                                            .read<ProductDetailsCubit>()
-                                            .addProductToCart(CartModel(
-                                                categoryName:
-                                                    productModel?.categoryName,
-                                                id: productModel?.id,
-                                                image: productModel?.image,
-                                                name: productModel?.name,
-                                                price: productModel?.price,
-                                                quntitiy: 1,
-                                                uid: FirebaseAuth
-                                                    .instance.currentUser!.uid));
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          backgroundColor: primaryColor,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 40.r, vertical: 11.r),
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(5.r))),
-                                      child: Text(
-                                        "Buy Now",
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-                                ),
+                                    child: ElevatedButton(
+                                        onPressed: () {
+                                          context
+                                              .read<ProductDetailsCubit>()
+                                              .addProductToCart(CartModel(
+                                                subcategoryId: subcategoryId,
+                                                  categoryName: productModel
+                                                      ?.categoryName,
+                                                  id: productModel?.id,
+                                                  rating: productModel?.rating,
+                                                  image: productModel?.image,
+                                                  name: productModel?.name,
+                                                  price: productModel?.price,
+                                                  quntitiy: 1,
+                                                  uid: currentUser!.id));
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: primaryColor,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 40.r,
+                                                vertical: 11.r),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        5.r))),
+                                        child: Text(
+                                          "Buy Now",
+                                          style: TextStyle(color: Colors.white),
+                                        )),
+                                  ),
                       ],
                     );
                   },
